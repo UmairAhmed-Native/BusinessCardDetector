@@ -117,7 +117,7 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
                 getActivity().startActivity(i);
             }
         } else if (view == searchLayout) {
-
+            navigateToSearchFragment();
         }
     }
 

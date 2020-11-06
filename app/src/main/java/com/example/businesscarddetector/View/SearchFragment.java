@@ -129,7 +129,8 @@ public class SearchFragment extends Fragment implements ContactNavigationListene
     @Override
     public void onClick(View view) {
         if (view == filterSearch) {
-            FilterDialog filterDialog=new FilterDialog(this);
+            FilterDialog filterDialog = new FilterDialog(this);
+            filterDialog.show(getFragmentManager(), "filter_dialog");
         }
     }
 }
