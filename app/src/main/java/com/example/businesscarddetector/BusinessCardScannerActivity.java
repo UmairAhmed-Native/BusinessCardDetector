@@ -1,5 +1,6 @@
 package com.example.businesscarddetector;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -10,8 +11,15 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.businesscarddetector.utils.Constants;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,33 +28,65 @@ import java.util.Date;
 public class BusinessCardScannerActivity extends AppCompatActivity {
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     private final long ONE_DAY = 24 * 60 * 60 * 1000;
+    final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_card_scanner);
         checkValidation();
-        if (!checkPermission()) {
-            requestPermission();
-        } else {
-            startQRScannerActivity();
-        }
+
 
     }
 
     private void checkValidation() {
-        Date _now = new Date();
-        String dateString = formatter.format(_now);
-        Date before = null;
-        try {
-            before = (Date)formatter.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Date now = new Date();
-        long diff = now.getTime() - before.getTime();
-        long days = diff / ONE_DAY;
-        if(days > 30) { // More than 30 days?
-            // Expired !!!
+        Query checkTimeSpan = database.orderByChild("timespan");
+        checkTimeSpan.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String timeInDb = snapshot.child("validation").child("timespan").getValue(String.class);
+                    if (timeInDb.isEmpty() || timeInDb == null) {
+                        Date _now = new Date();
+                        String dateString = formatter.format(_now);
+                        database.child("validation").child("timespan").setValue(dateString);
+                        startApp();
+                    } else {
+                        Date before = null;
+                        try {
+                            before = (Date) formatter.parse(timeInDb);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        Date now = new Date();
+                        long diff = now.getTime() - before.getTime();
+                        long days = diff / ONE_DAY;
+                        if (days > 0) {
+                            finish();
+                        } else {
+                            startApp();
+                        }
+                    }
+                } else {
+                    Date _now = new Date();
+                    String dateString = formatter.format(_now);
+                    database.child("validation").child("timespan").setValue(dateString);
+                    startApp();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void startApp() {
+        if (!checkPermission()) {
+            requestPermission();
+        } else {
+            startQRScannerActivity();
         }
     }
 

@@ -1,8 +1,5 @@
-plugins {
-    id 'com.android.application'
-    id 'androidx.navigation.safeargs'
-    id 'com.google.gms.google-services'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -36,6 +33,7 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     implementation "androidx.legacy:legacy-support-v4:$legacy_support_version_v4"
+    implementation 'com.google.firebase:firebase-database:19.5.1'
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
@@ -55,5 +53,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation "com.google.zxing:core:$zxing_core_version"
     implementation "com.googlecode.ez-vcard:ez-vcard:$ez_vcard_version"
+
+
 
 }
