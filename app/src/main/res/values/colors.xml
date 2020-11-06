@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_b110c3">#b110c3</color>
+    <color name="color_f6694f">#f6694f</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="qr_code_finder_mask">#80000000</color>
+    <color name="qr_code_finder_frame">#FFFFFFFF</color>
+    <color name="qr_code_finder_laser">#25f705</color>
+
+    <color name="color_D5BBD8">#D5BBD8</color>
+    <color name="color_FDDCD6">#FBBAAF</color>
+</resources>

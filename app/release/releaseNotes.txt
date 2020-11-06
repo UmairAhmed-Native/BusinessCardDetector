@@ -1,0 +1,13 @@
+Build v0.1
+Release Notes:
+  Scan QRCode
+	with Skip and Capture Button
+  LandingPage
+	with QR Scan Button
+	Search Button 
+	Add Manual Records
+	View Record Listing
+  Update Record
+  Delete Record
+  View Record
+(Note : Search Full Implementation will be fullfilled in next build)
