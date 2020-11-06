@@ -10,20 +10,44 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+
 import com.example.businesscarddetector.utils.Constants;
 
-public class BusinessCardScannerActivity extends AppCompatActivity {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+public class BusinessCardScannerActivity extends AppCompatActivity {
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private final long ONE_DAY = 24 * 60 * 60 * 1000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_card_scanner);
+        checkValidation();
         if (!checkPermission()) {
             requestPermission();
         } else {
             startQRScannerActivity();
         }
 
+    }
+
+    private void checkValidation() {
+        Date _now = new Date();
+        String dateString = formatter.format(_now);
+        Date before = null;
+        try {
+            before = (Date)formatter.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date now = new Date();
+        long diff = now.getTime() - before.getTime();
+        long days = diff / ONE_DAY;
+        if(days > 30) { // More than 30 days?
+            // Expired !!!
+        }
     }
 
     private boolean checkPermission() {

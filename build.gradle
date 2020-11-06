@@ -16,6 +16,7 @@ buildscript {
         zxing_core_version = "3.3.3"
         nav_version = "2.3.1"
         ez_vcard_version = "0.11.1"
+        google_services_versions = "4.3.4"
 
     }
     repositories {
@@ -25,6 +26,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath "com.google.gms:google-services:$google_services_versions"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
