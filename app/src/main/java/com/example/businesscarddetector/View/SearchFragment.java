@@ -28,6 +28,7 @@ import com.example.businesscarddetector.View.ViewInterface.ContactNavigationList
 import com.example.businesscarddetector.View.ViewInterface.SearchView;
 import com.example.businesscarddetector.View.dialog.FilterDialog;
 import com.example.businesscarddetector.utils.EqualSpacingItemDecoration;
+import com.example.businesscarddetector.utils.GistFragmentUtils;
 import com.example.businesscarddetector.utils.KeyboardUtil;
 
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ public class SearchFragment extends Fragment implements ContactNavigationListene
     private TextView emptyView;
     private EqualSpacingItemDecoration equalSpacingItemDecoration;
     private ImageView filterSearch;
+    private String searchString;
+    private int searchType = -1;
+    private FilterDialog filterDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,10 +70,11 @@ public class SearchFragment extends Fragment implements ContactNavigationListene
         super.onViewCreated(view, savedInstanceState);
         AppDatabase db = AppDatabase.getInstance(getContext());
         mPresenter = new SearchPresenterImpl(db.contactDao(), this);
-        mPresenter._getContacts();
+//        mPresenter._getContacts();
     }
 
     private void initViews() {
+        filterDialog = new FilterDialog(this);
         filterSearch = rootView.findViewById(R.id.img_filter_search);
         searchEditText = rootView.findViewById(R.id.search_edt);
         searchContactRv = rootView.findViewById(R.id.search_contact_list_rv);
@@ -83,7 +88,8 @@ public class SearchFragment extends Fragment implements ContactNavigationListene
         searchEditText.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                mPresenter._getContactsByCName(searchEditText.getText().toString());
+                searchString = searchEditText.getText().toString();
+                getContactsByCompany(searchString);
             }
 
             public void beforeTextChanged(CharSequence s, int start,
@@ -104,6 +110,9 @@ public class SearchFragment extends Fragment implements ContactNavigationListene
         VCardModel vCardModel = new VCardModel(contactModel);
         Bundle bundle = new Bundle();
         bundle.putSerializable("contactModel", vCardModel);
+        ViewContactFragment viewContactFragment = new ViewContactFragment();
+        viewContactFragment.setArguments(bundle);
+        GistFragmentUtils.switchFragmentAdd(getActivity(), viewContactFragment, false, false);
     }
 
     @Override
@@ -129,8 +138,41 @@ public class SearchFragment extends Fragment implements ContactNavigationListene
     @Override
     public void onClick(View view) {
         if (view == filterSearch) {
-            FilterDialog filterDialog = new FilterDialog(this);
+
+            filterDialog.searchType = this.searchType;
             filterDialog.show(getFragmentManager(), "filter_dialog");
         }
+    }
+
+    public void searchFilter(int searchType) {
+        switch (searchType) {
+            case 1: {
+                this.searchType = 1;
+                getContactsByCompany(searchString);
+            }
+            break;
+            case 2: {
+                this.searchType = 2;
+                getContactsByPerson(searchString);
+            }
+            break;
+            case 3: {
+                this.searchType = 3;
+                getContactsByDesignation(searchString);
+            }
+            break;
+        }
+    }
+
+    private void getContactsByCompany(String search) {
+        mPresenter._getContactsByCName(search);
+    }
+
+    private void getContactsByPerson(String search) {
+        mPresenter._getContactsByPName(search);
+    }
+
+    private void getContactsByDesignation(String search) {
+        mPresenter._getContactsByDesig(search);
     }
 }

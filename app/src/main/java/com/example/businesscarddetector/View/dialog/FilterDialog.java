@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class FilterDialog extends BottomSheetDialogFragment {
+public class FilterDialog extends BottomSheetDialogFragment implements View.OnClickListener {
     private SearchFragment searchFragmentInstance;
     private View rootView;
     private TextView txtByCompany;
@@ -27,6 +28,8 @@ public class FilterDialog extends BottomSheetDialogFragment {
     private ImageView chckCompany;
     private ImageView chckPerson;
     private ImageView chckDesignation;
+    private RelativeLayout rrMain;
+    public int searchType;
 
     public FilterDialog(SearchFragment searchFragment) {
         this.searchFragmentInstance = searchFragment;
@@ -50,9 +53,31 @@ public class FilterDialog extends BottomSheetDialogFragment {
             bottomSheetBehavior.setPeekHeight(bottomSheet.getHeight());
 
         });
+
+        rrMain = rootView.findViewById(R.id.rr_main);
         txtByCompany = rootView.findViewById(R.id.btn_company_txt);
+        chckCompany = rootView.findViewById(R.id.check_company);
         txtByDesignation = rootView.findViewById(R.id.btn_designation_txt);
+        chckPerson = rootView.findViewById(R.id.check_person);
         txtByPerson = rootView.findViewById(R.id.btn_person_txt);
+        chckDesignation = rootView.findViewById(R.id.check_designation);
+        rrMain.setOnClickListener(this);
+        txtByCompany.setOnClickListener(this);
+        txtByDesignation.setOnClickListener(this);
+        txtByPerson.setOnClickListener(this);
+        if (searchType == 1) {
+            chckDesignation.setVisibility(View.GONE);
+            chckPerson.setVisibility(View.GONE);
+            chckCompany.setVisibility(View.VISIBLE);
+        } else if (searchType == 2) {
+            chckDesignation.setVisibility(View.GONE);
+            chckPerson.setVisibility(View.VISIBLE);
+            chckCompany.setVisibility(View.GONE);
+        } else if (searchType == 3) {
+            chckDesignation.setVisibility(View.VISIBLE);
+            chckPerson.setVisibility(View.GONE);
+            chckCompany.setVisibility(View.GONE);
+        }
     }
 
     @Nullable
@@ -66,4 +91,28 @@ public class FilterDialog extends BottomSheetDialogFragment {
 
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view == rrMain) {
+            dismiss();
+        } else if (view == txtByCompany) {
+            chckDesignation.setVisibility(View.GONE);
+            chckPerson.setVisibility(View.GONE);
+            chckCompany.setVisibility(View.VISIBLE);
+            searchFragmentInstance.searchFilter(1);
+            dismiss();
+        } else if (view == txtByPerson) {
+            chckDesignation.setVisibility(View.GONE);
+            chckPerson.setVisibility(View.VISIBLE);
+            chckCompany.setVisibility(View.GONE);
+            searchFragmentInstance.searchFilter(2);
+            dismiss();
+        } else if (view == txtByDesignation) {
+            chckDesignation.setVisibility(View.VISIBLE);
+            chckPerson.setVisibility(View.GONE);
+            chckCompany.setVisibility(View.GONE);
+            searchFragmentInstance.searchFilter(3);
+            dismiss();
+        }
+    }
 }

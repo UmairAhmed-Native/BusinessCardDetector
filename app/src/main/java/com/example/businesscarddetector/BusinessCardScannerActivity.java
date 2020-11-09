@@ -27,14 +27,16 @@ import java.util.Date;
 
 public class BusinessCardScannerActivity extends AppCompatActivity {
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    private final long ONE_DAY = 24 * 60 * 60 * 1000;
+    Date _now = new Date();
+    String dateString = formatter.format(_now);
     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_card_scanner);
-        checkValidation();
+        startApp();
+//        checkValidation();
 
 
     }
@@ -46,32 +48,11 @@ public class BusinessCardScannerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     String timeInDb = snapshot.child("validation").child("timespan").getValue(String.class);
-                    if (timeInDb.isEmpty() || timeInDb == null) {
-                        Date _now = new Date();
-                        String dateString = formatter.format(_now);
-                        database.child("validation").child("timespan").setValue(dateString);
-                        startApp();
+                    if (timeInDb.equals(dateString)) {
+                        finish();
                     } else {
-                        Date before = null;
-                        try {
-                            before = (Date) formatter.parse(timeInDb);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        Date now = new Date();
-                        long diff = now.getTime() - before.getTime();
-                        long days = diff / ONE_DAY;
-                        if (days > 0) {
-                            finish();
-                        } else {
-                            startApp();
-                        }
+                        startApp();
                     }
-                } else {
-                    Date _now = new Date();
-                    String dateString = formatter.format(_now);
-                    database.child("validation").child("timespan").setValue(dateString);
-                    startApp();
                 }
             }
 
