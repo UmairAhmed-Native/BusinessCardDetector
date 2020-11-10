@@ -44,6 +44,7 @@
                 android:layout_height="0dp"
                 android:padding="10dp"
                 android:src="@drawable/ic_check"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/btn_company_txt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
@@ -79,12 +80,14 @@
                 app:layout_constraintTop_toBottomOf="@id/layout_divider_line"
 
                 />
+
             <ImageView
                 android:id="@+id/check_person"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:padding="10dp"
                 android:src="@drawable/ic_check"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/btn_person_txt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
@@ -119,12 +122,14 @@
                 app:layout_constraintTop_toBottomOf="@id/btn_person_txt"
 
                 />
+
             <ImageView
                 android:id="@+id/check_designation"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:padding="10dp"
                 android:src="@drawable/ic_check"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/btn_designation_txt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"

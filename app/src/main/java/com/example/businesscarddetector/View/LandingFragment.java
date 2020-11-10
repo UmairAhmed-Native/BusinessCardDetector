@@ -228,7 +228,7 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
         bundle.putSerializable("contactModel", vCardModel);
         ViewContactFragment viewContactFragment = new ViewContactFragment();
         viewContactFragment.setArguments(bundle);
-        GistFragmentUtils.switchFragmentAdd(getActivity(), viewContactFragment, true, false);
+        GistFragmentUtils.switchFragmentAdd(getActivity(), viewContactFragment, false, false);
 
     }
 }
