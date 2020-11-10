@@ -19,6 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +36,7 @@ import com.example.businesscarddetector.Adapter.ContactAdapter;
 import com.example.businesscarddetector.Model.VCardModel;
 import com.example.businesscarddetector.QRScannerActivity;
 import com.example.businesscarddetector.View.ViewInterface.ContactNavigationListener;
+import com.example.businesscarddetector.View.dialog.FilterDialog;
 import com.example.businesscarddetector.utils.Constants;
 import com.example.businesscarddetector.Local.AppDatabase;
 import com.example.businesscarddetector.Model.ContactModel;
@@ -41,6 +46,7 @@ import com.example.businesscarddetector.R;
 import com.example.businesscarddetector.View.ViewInterface.LandingView;
 import com.example.businesscarddetector.utils.EqualSpacingItemDecoration;
 import com.example.businesscarddetector.utils.GistFragmentUtils;
+import com.example.businesscarddetector.utils.KeyboardUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -61,7 +67,13 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
     private TextView qrScanText;
     private ConstraintLayout searchLayout;
     private ConstraintLayout qrScanLayout;
+    private EditText searchEdt;
+    private ImageView searchFilter;
     private EqualSpacingItemDecoration equalSpacingItemDecoration;
+    private String searchString;
+    private int searchType = -1;
+    private FilterDialog filterDialog;
+    private ConstraintLayout mainContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,35 +101,68 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
     }
 
     private void initView() {
+        mainContainer = rootView.findViewById(R.id.main_container);
+        filterDialog = new FilterDialog(this);
         addNewContact = rootView.findViewById(R.id.add_contact_fab);
         contactListRv = rootView.findViewById(R.id.contact_list_rv);
         emptyView = rootView.findViewById(R.id.empty_view);
         qrScanLayout = rootView.findViewById(R.id.qr_scan_layout);
         contactTextTitle = rootView.findViewById(R.id.contacts_txt);
         searchLayout = rootView.findViewById(R.id.layout_search);
+        searchEdt = searchLayout.findViewById(R.id.txt_name);
         equalSpacingItemDecoration = new EqualSpacingItemDecoration(5, 1);
         contactListAdapter = new ContactAdapter(contactModelList, this);
         contactListRv.setLayoutManager(new LinearLayoutManager(getContext()));
         contactListRv.addItemDecoration(equalSpacingItemDecoration);
         contactListRv.setAdapter(contactListAdapter);
+        searchFilter = searchLayout.findViewById(R.id.img_filter_search);
         contactListAdapter.notifyDataSetChanged();
-        searchLayout.setOnClickListener(this);
         qrScanLayout.setOnClickListener(this);
         addNewContact.setOnClickListener(this);
+        searchFilter.setOnClickListener(this);
+        mainContainer.setOnClickListener(this);
+        searchEdt.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                searchString = searchEdt.getText().toString();
+                if (TextUtils.isEmpty(searchString)) {
+                    landingPresenter._getContacts();
+                } else {
+                    searchFilter(searchType);
+                }
+
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
         if (view == addNewContact) {
+            KeyboardUtil.hideKeyboard(getActivity());
             navigateToAddUpdateFragment();
         } else if (view == qrScanLayout) {
+            KeyboardUtil.hideKeyboard(getActivity());
             if (checkPermission()) {
                 Intent i = new Intent(getActivity(), QRScannerActivity.class);
                 i.putExtra(Constants.START_ACTIVITY_FOR_RESULT, true);
                 getActivity().startActivity(i);
             }
-        } else if (view == searchLayout) {
-            navigateToSearchFragment();
+        } else if (view == searchFilter) {
+            filterDialog.searchType = this.searchType;
+            filterDialog.show(getFragmentManager(), "filter_dialog");
+            // navigateToSearchFragment();
+        } else if (view == mainContainer) {
+            KeyboardUtil.hideKeyboard(getActivity());
         }
     }
 
@@ -128,8 +173,8 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
     }
 
     private void navigateToSearchFragment() {
-        SearchFragment searchFragment = new SearchFragment();
-        GistFragmentUtils.switchFragmentAdd(getActivity(), searchFragment, true, false);
+//        SearchFragment searchFragment = new SearchFragment();
+//        GistFragmentUtils.switchFragmentAdd(getActivity(), searchFragment, true, false);
     }
 
     private boolean checkPermission() {
@@ -228,7 +273,43 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
         bundle.putSerializable("contactModel", vCardModel);
         ViewContactFragment viewContactFragment = new ViewContactFragment();
         viewContactFragment.setArguments(bundle);
-        GistFragmentUtils.switchFragmentAdd(getActivity(), viewContactFragment, false, false);
+        GistFragmentUtils.switchFragmentAdd(getActivity(), viewContactFragment, true, false);
 
+    }
+
+    public void searchFilter(int searchType) {
+        switch (searchType) {
+            case 1: {
+                this.searchType = 1;
+                getContactsByCompany(searchString);
+            }
+            break;
+            case 2: {
+                this.searchType = 2;
+                getContactsByPerson(searchString);
+            }
+            break;
+            case 3: {
+                this.searchType = 3;
+                getContactsByDesignation(searchString);
+            }
+            break;
+            default: {
+                getContactsByCompany(searchString);
+            }
+            break;
+        }
+    }
+
+    private void getContactsByCompany(String search) {
+        landingPresenter._getContactsByCName(search);
+    }
+
+    private void getContactsByPerson(String search) {
+        landingPresenter._getContactsByPName(search);
+    }
+
+    private void getContactsByDesignation(String search) {
+        landingPresenter._getContactsByDesig(search);
     }
 }

@@ -8,5 +8,6 @@ public interface ViewContactView extends BaseView<ViewContactPresenter> {
     void populateContact(ContactModel contactModel,boolean showDoneBtn);
     void close(boolean isInsert);
     void showDeleteConfirmDialog(ContactModel contactModel);
-    void alreadyExist();
+    void alreadyExist(boolean isExist);
+    void invalid();
 }

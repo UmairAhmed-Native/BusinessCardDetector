@@ -33,4 +33,8 @@
     <style name="bg_filter_dialog">
         <item name="android:background">@drawable/bg_filter_dialog</item>
     </style>
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/red_500</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

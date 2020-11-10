@@ -1,6 +1,5 @@
 package com.example.businesscarddetector.View.dialog;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.businesscarddetector.R;
-import com.example.businesscarddetector.View.SearchFragment;
+import com.example.businesscarddetector.View.LandingFragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class FilterDialog extends BottomSheetDialogFragment implements View.OnClickListener {
-    private SearchFragment searchFragmentInstance;
+    private LandingFragment landingFragmentInstance;
     private View rootView;
     private TextView txtByCompany;
     private TextView txtByPerson;
@@ -31,8 +30,8 @@ public class FilterDialog extends BottomSheetDialogFragment implements View.OnCl
     private RelativeLayout rrMain;
     public int searchType;
 
-    public FilterDialog(SearchFragment searchFragment) {
-        this.searchFragmentInstance = searchFragment;
+    public FilterDialog(LandingFragment landingFragmentInstance) {
+        this.landingFragmentInstance = landingFragmentInstance;
     }
 
     @Override
@@ -99,19 +98,19 @@ public class FilterDialog extends BottomSheetDialogFragment implements View.OnCl
             chckDesignation.setVisibility(View.GONE);
             chckPerson.setVisibility(View.GONE);
             chckCompany.setVisibility(View.VISIBLE);
-            searchFragmentInstance.searchFilter(1);
+            landingFragmentInstance.searchFilter(1);
             dismiss();
         } else if (view == txtByPerson) {
             chckDesignation.setVisibility(View.GONE);
             chckPerson.setVisibility(View.VISIBLE);
             chckCompany.setVisibility(View.GONE);
-            searchFragmentInstance.searchFilter(2);
+            landingFragmentInstance.searchFilter(2);
             dismiss();
         } else if (view == txtByDesignation) {
             chckDesignation.setVisibility(View.VISIBLE);
             chckPerson.setVisibility(View.GONE);
             chckCompany.setVisibility(View.GONE);
-            searchFragmentInstance.searchFilter(3);
+            landingFragmentInstance.searchFilter(3);
             dismiss();
         }
     }

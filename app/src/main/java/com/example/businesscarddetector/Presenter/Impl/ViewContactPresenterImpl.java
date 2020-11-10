@@ -34,32 +34,37 @@ public class ViewContactPresenterImpl implements ViewContactPresenter {
         String designation = "";
         String email = "";
         VCard vcard = Ezvcard.parse(vCardString).first();
-        for (int i = 0; i <= vcard.getTelephoneNumbers().size(); i++) {
-            if (!TextUtils.isEmpty(vcard.getTelephoneNumbers().get(i).getText())) {
-                contact = vcard.getTelephoneNumbers().get(i).getText();
-                break;
+        if (vcard == null) {
+            mView.invalid();
+        } else {
+            for (int i = 0; i <= vcard.getTelephoneNumbers().size(); i++) {
+                if (!TextUtils.isEmpty(vcard.getTelephoneNumbers().get(i).getText())) {
+                    contact = vcard.getTelephoneNumbers().get(i).getText();
+                    break;
+                }
             }
-        }
-        for (int i = 0; i <= vcard.getTitles().size(); i++) {
-            if (!TextUtils.isEmpty(vcard.getTitles().get(i).getValue())) {
-                designation = vcard.getTitles().get(i).getValue();
-                break;
+            for (int i = 0; i <= vcard.getTitles().size(); i++) {
+                if (!TextUtils.isEmpty(vcard.getTitles().get(i).getValue())) {
+                    designation = vcard.getTitles().get(i).getValue();
+                    break;
+                }
             }
-        }
-        for (int i = 0; i <= vcard.getEmails().size(); i++) {
-            if (!TextUtils.isEmpty(vcard.getEmails().get(i).getValue())) {
-                email = vcard.getEmails().get(i).getValue();
-                break;
+            for (int i = 0; i <= vcard.getEmails().size(); i++) {
+                if (!TextUtils.isEmpty(vcard.getEmails().get(i).getValue())) {
+                    email = vcard.getEmails().get(i).getValue();
+                    break;
+                }
             }
-        }
-        ContactModel contactModel = new ContactModel(
-                vcard.getFormattedName().getValue(),
-                vcard.getOrganization().getValues().get(0), designation,
-                contact, email
-        );
+            ContactModel contactModel = new ContactModel(
+                    vcard.getFormattedName().getValue(),
+                    vcard.getOrganization().getValues().get(0), designation,
+                    contact, email
+            );
 
 
-        mView.populateContact(contactModel, showDoneBtn);
+            mView.populateContact(contactModel, showDoneBtn);
+        }
+
     }
 
     @Override
@@ -76,7 +81,7 @@ public class ViewContactPresenterImpl implements ViewContactPresenter {
                 long ids = this.contactDao._insertContact(contactModel);
                 mView.close(true);
             } else {
-                mView.alreadyExist();
+                mView.alreadyExist(true);
             }
 
         } else {

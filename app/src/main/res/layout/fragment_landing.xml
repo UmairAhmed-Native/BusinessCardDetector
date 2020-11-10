@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/main_container"
+    android:background="@drawable/bg"
     android:layout_height="match_parent"
     tools:context=".View.LandingFragment">
 
@@ -53,7 +55,6 @@
             android:paddingTop="5dp"
             android:paddingEnd="15dp"
             android:paddingBottom="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="10dp"
@@ -82,11 +83,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <include
-        android:id="@+id/progres_bar_layout"
-        layout="@layout/layout_loader"
-        android:elevation="20dp" />
 
     <TextView
         android:id="@+id/empty_view"

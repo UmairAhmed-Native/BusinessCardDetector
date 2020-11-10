@@ -55,6 +55,7 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
     private ConstraintLayout updateLayout;
     private ContactModel contactModel;
     private boolean isRemoveBtn = false;
+    private ImageView backArrow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,8 +84,10 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
             if (getArguments().getSerializable("contactModel") != null) {
                 vCardModel = (VCardModel) getArguments().getSerializable("contactModel");
                 if (vCardModel.getContactModel() == null && vCardModel.getvCardString() != null) {
+                    backArrow.setVisibility(View.GONE);
                     mPresenter.populateContact(vCardModel.getvCardString());
                 } else if (vCardModel.getContactModel() != null && vCardModel.getvCardString() == null) {
+                    backArrow.setVisibility(View.VISIBLE);
                     this.contactModel = vCardModel.getContactModel();
                     mPresenter.populateContact(vCardModel.getContactModel());
                 }
@@ -102,17 +105,18 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
             Log.d("receiver", "Got message: ");
             ContactModel contactModelById = mPresenter.getContactById(contactModelUpdate.id);
             setRecords(contactModel);
-            Toast.makeText(getContext(), "Contact Update Successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Record Update Successfully", Toast.LENGTH_LONG).show();
         }
     };
 
     private void initViews() {
+        backArrow = rootView.findViewById(R.id.back_arrow);
         updateLayout = rootView.findViewById(R.id.layout_update);
         deleteLayout = rootView.findViewById(R.id.layout_delete);
         deleteImage = deleteLayout.findViewById(R.id.img_image);
-        deleteText = deleteLayout.findViewById(R.id.txt_name);
+        deleteText = deleteLayout.findViewById(R.id.txt_name_custom);
         updateImage = updateLayout.findViewById(R.id.img_image);
-        updateText = updateLayout.findViewById(R.id.txt_name);
+        updateText = updateLayout.findViewById(R.id.txt_name_custom);
         txtCompany = rootView.findViewById(R.id.txt_company);
         txtPerson = rootView.findViewById(R.id.txt_person);
         txtEmail = rootView.findViewById(R.id.txt_email);
@@ -128,6 +132,7 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
         deleteLayout.setOnClickListener(this);
         updateLayout.setOnClickListener(this);
         txtDone.setOnClickListener(this);
+        backArrow.setOnClickListener(this);
     }
 
     @Override
@@ -158,6 +163,8 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
             AddUpdateFragment addUpdateFragment = new AddUpdateFragment();
             addUpdateFragment.setArguments(bundle);
             GistFragmentUtils.switchFragmentAdd(getActivity(), addUpdateFragment, true, false);
+        } else if (view == backArrow) {
+            GistFragmentUtils.onBackPressed(getActivity());
         }
     }
 
@@ -188,11 +195,13 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
     @Override
     public void close(boolean isInsert) {
         if (isInsert) {
-            Toast.makeText(getContext(), "Contact Insert Successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Record Insert Successfully", Toast.LENGTH_LONG).show();
+            navigateToLandingFragment();
         } else {
-            Toast.makeText(getContext(), "Contact Delete Successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Record Delete Successfully", Toast.LENGTH_LONG).show();
+            GistFragmentUtils.onBackPressed(getActivity());
         }
-        navigateToLandingFragment();
+
     }
 
     private void navigateToLandingFragment() {
@@ -223,8 +232,19 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public void alreadyExist() {
-        Toast.makeText(getContext(), "Contact already Exist", Toast.LENGTH_LONG).show();
+    public void alreadyExist(boolean isExist) {
+        Toast.makeText(getContext(), "Record already Exist", Toast.LENGTH_LONG).show();
+        if (isExist) {
+            navigateToLandingFragment();
+        } else {
+            GistFragmentUtils.onBackPressed(getActivity());
+        }
+    }
+
+    @Override
+    public void invalid() {
+        Toast.makeText(getContext(), "Invalid QRCode", Toast.LENGTH_SHORT).show();
+        navigateToLandingFragment();
     }
 
     private void setRecords(ContactModel contactModel) {

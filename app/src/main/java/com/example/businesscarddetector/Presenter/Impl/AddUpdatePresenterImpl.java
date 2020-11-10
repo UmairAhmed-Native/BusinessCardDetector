@@ -23,22 +23,44 @@ public class AddUpdatePresenterImpl implements AddUpdatePresenter {
     @Override
     public void _insertContact(ContactModel contactModel) {
         long ids = this._contactDao._insertContact(contactModel);
-        addUpdateContactView.close(true);
+        if (ids >= 0) {
+            addUpdateContactView.close(true);
+        }
+
     }
 
     @Override
     public int _validateContact(ContactModel contactModel) {
-        if (TextUtils.isEmpty(contactModel.getCompanyName())) {
-            return 1;
+        if (TextUtils.isEmpty(contactModel.getCompanyName())
+                && TextUtils.isEmpty(contactModel.getPersonName())
+                && TextUtils.isEmpty(contactModel.getContactNumber())
+                && TextUtils.isEmpty(contactModel.getDesignation())
+                && TextUtils.isEmpty(contactModel.getEmailAddress())) {
+            return 7;
+        } else if (TextUtils.isEmpty(contactModel.getCompanyName())
+                && TextUtils.isEmpty(contactModel.getPersonName())
+                && TextUtils.isEmpty(contactModel.getContactNumber())
+                && TextUtils.isEmpty(contactModel.getDesignation())) {
+            return 8;
+        } else if (TextUtils.isEmpty(contactModel.getCompanyName())
+                && TextUtils.isEmpty(contactModel.getPersonName())
+                && TextUtils.isEmpty(contactModel.getContactNumber())) {
+            return 9;
+        } else if (TextUtils.isEmpty(contactModel.getCompanyName())
+                && TextUtils.isEmpty(contactModel.getPersonName())) {
+            return 10;
         } else if (TextUtils.isEmpty(contactModel.getPersonName())) {
             return 2;
         } else if (TextUtils.isEmpty(contactModel.getContactNumber())) {
             return 3;
         } else if (TextUtils.isEmpty(contactModel.getDesignation())) {
             return 4;
-        } else if (TextUtils.isEmpty(contactModel.getEmailAddress())
-                && (!Patterns.EMAIL_ADDRESS.matcher(contactModel.getEmailAddress()).matches())) {
+        } else if (TextUtils.isEmpty(contactModel.getEmailAddress())) {
             return 5;
+        } else if ((!Patterns.EMAIL_ADDRESS.matcher(contactModel.getEmailAddress()).matches())) {
+            return 6;
+        } else if (TextUtils.isEmpty(contactModel.getCompanyName())) {
+            return 1;
         }
         return -1;
     }

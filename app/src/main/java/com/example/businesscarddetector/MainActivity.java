@@ -41,16 +41,4 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-    @Override
-    public void onBackPressed() {
-        if (GistFragmentUtils.getCurrentFragment(this) instanceof ViewContactFragment) {
-            LandingFragment landingFragment = new LandingFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.container, landingFragment).commit();
-        } else {
-            super.onBackPressed();
-
-        }
-    }
 }

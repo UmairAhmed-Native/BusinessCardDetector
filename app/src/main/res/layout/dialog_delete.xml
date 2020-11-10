@@ -29,7 +29,7 @@
         android:paddingStart="15dp"
         android:paddingTop="5dp"
         android:paddingEnd="15dp"
-        android:text="This contact will be permanently remove from your database"
+        android:text="This record will be permanently remove from your database"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="13sp"
