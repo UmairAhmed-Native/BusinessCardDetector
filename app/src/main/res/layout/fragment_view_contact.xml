@@ -26,15 +26,6 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
-            android:id="@+id/close_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_close"
-            app:layout_constraintBottom_toTopOf="@id/review_layout"
-            app:layout_constraintStart_toStartOf="@id/review_layout"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
             android:id="@+id/back_arrow"
             android:layout_width="30dp"
             android:layout_height="30dp"
