@@ -49,9 +49,9 @@ public class BusinessCardScannerActivity extends AppCompatActivity {
                 if (snapshot.exists()) {
                     String timeInDb = snapshot.child("validation").child("timespan").getValue(String.class);
                     if (timeInDb.equals(dateString)) {
-                        finish();
-                    } else {
                         startApp();
+                    } else {
+                        finish();
                     }
                 }
             }
