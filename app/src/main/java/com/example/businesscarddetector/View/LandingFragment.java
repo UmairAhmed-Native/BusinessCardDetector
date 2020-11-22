@@ -149,6 +149,9 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
 
             }
         });
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
+                new IntentFilter("contact_model_insert"));
+
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
