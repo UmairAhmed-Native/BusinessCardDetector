@@ -22,6 +22,7 @@ import static com.example.businesscarddetector.utils.Constants.REQUEST_CODE_QR_S
 
 
 public class MainActivity extends AppCompatActivity {
+    LandingFragment landingFragment = new LandingFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, businessCardScannerFragment).commit();
         } else {
-            LandingFragment landingFragment = new LandingFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, landingFragment).commit();
         }

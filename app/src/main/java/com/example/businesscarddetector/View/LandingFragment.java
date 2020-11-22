@@ -2,8 +2,11 @@ package com.example.businesscarddetector.View;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +27,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +102,8 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
         AppDatabase db = AppDatabase.getInstance(getContext());
         landingPresenter = new LandingPresenterImpl(db.contactDao(), this);
         landingPresenter._getContacts();
-
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
+                new IntentFilter("contact_model_insert"));
     }
 
     private void initView() {
@@ -144,6 +150,17 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
             }
         });
     }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            ContactModel contactModelUpdate = (ContactModel) intent.getSerializableExtra("contact_model_insert");
+            Log.d("receiver", "Got message: ");
+            landingPresenter._getContacts();
+            Toast.makeText(getContext(), "Record Insert Successfully", Toast.LENGTH_LONG).show();
+        }
+    };
 
     @Override
     public void onClick(View view) {

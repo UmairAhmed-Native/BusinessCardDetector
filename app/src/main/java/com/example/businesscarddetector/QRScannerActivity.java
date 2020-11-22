@@ -20,6 +20,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class QRScannerActivity extends AppCompatActivity implements View.OnClick
     private boolean startActivityForResult = false;
     private Context mApplicationContext;
     private String resultString;
+    private Boolean isSkip = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,9 +230,13 @@ public class QRScannerActivity extends AppCompatActivity implements View.OnClick
 
         }
         if (view == mSkipScanner) {
-            Intent i = new Intent(this, MainActivity.class);
-            this.startActivity(i);
-            finish();
+            if (!isSkip) {
+                isSkip = true;
+                Intent i = new Intent(this, MainActivity.class);
+                this.startActivity(i);
+                finish();
+            }
+
         }
     }
 

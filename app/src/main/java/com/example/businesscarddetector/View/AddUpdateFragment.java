@@ -441,13 +441,14 @@ public class AddUpdateFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void close(boolean isInsert) {
+        Intent intent;
         if (isInsert) {
-            Toast.makeText(getContext(), "Record Insert Successfully", Toast.LENGTH_LONG).show();
+            intent = new Intent("contact_model_insert");
         } else {
-            Intent intent = new Intent("contact_model_update");
-            intent.putExtra("contact_update", contactModel);
-            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+            intent = new Intent("contact_model_update");
         }
+        intent.putExtra("contact_update", contactModel);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
         GistFragmentUtils.onBackPressed(getActivity());
 

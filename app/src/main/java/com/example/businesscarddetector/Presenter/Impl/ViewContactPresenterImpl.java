@@ -37,20 +37,23 @@ public class ViewContactPresenterImpl implements ViewContactPresenter {
         if (vcard == null) {
             mView.invalid();
         } else {
-            for (int i = 0; i <= vcard.getTelephoneNumbers().size(); i++) {
-                if (!TextUtils.isEmpty(vcard.getTelephoneNumbers().get(i).getText())) {
+            for (int i = 0; i < vcard.getTelephoneNumbers().size(); i++) {
+                if (!TextUtils.isEmpty(vcard.getTelephoneNumbers().get(i).getText())
+                        && vcard.getTelephoneNumbers().get(i).getText() != null) {
                     contact = vcard.getTelephoneNumbers().get(i).getText();
                     break;
                 }
             }
-            for (int i = 0; i <= vcard.getTitles().size(); i++) {
-                if (!TextUtils.isEmpty(vcard.getTitles().get(i).getValue())) {
+            for (int i = 0; i < vcard.getTitles().size(); i++) {
+                if (!TextUtils.isEmpty(vcard.getTitles().get(i).getValue())
+                        && vcard.getTitles().get(i).getValue() != null) {
                     designation = vcard.getTitles().get(i).getValue();
                     break;
                 }
             }
-            for (int i = 0; i <= vcard.getEmails().size(); i++) {
-                if (!TextUtils.isEmpty(vcard.getEmails().get(i).getValue())) {
+            for (int i = 0; i < vcard.getEmails().size(); i++) {
+                if (!TextUtils.isEmpty(vcard.getEmails().get(i).getValue())
+                        && vcard.getEmails().get(i).getValue() != null) {
                     email = vcard.getEmails().get(i).getValue();
                     break;
                 }

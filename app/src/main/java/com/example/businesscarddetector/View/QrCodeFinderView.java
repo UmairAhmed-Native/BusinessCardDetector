@@ -16,7 +16,7 @@ import com.example.businesscarddetector.utils.ScreenUtils;
 
 public final class QrCodeFinderView extends RelativeLayout {
 
-    private static final int[] SCANNER_ALPHA = { 0, 64, 128, 192, 255, 192, 128, 64 };
+    private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
     private static final long ANIMATION_DELAY = 100L;
     private static final int OPAQUE = 0xFF;
 
@@ -69,10 +69,11 @@ public final class QrCodeFinderView extends RelativeLayout {
         FrameLayout frameLayout = (FrameLayout) relativeLayout.findViewById(R.id.qr_code_fl_scanner);
         mFrameRect = new Rect();
         RelativeLayout.LayoutParams layoutParams = (LayoutParams) frameLayout.getLayoutParams();
+
         mFrameRect.left = (ScreenUtils.getScreenWidth(context) - layoutParams.width) / 2;
-        mFrameRect.top = layoutParams.topMargin;
         mFrameRect.right = mFrameRect.left + layoutParams.width;
         mFrameRect.bottom = mFrameRect.top + layoutParams.height;
+        mFrameRect.top = ((ScreenUtils.getScreenHeight(context) - layoutParams.height) / 2);
     }
 
     @Override
@@ -157,7 +158,6 @@ public final class QrCodeFinderView extends RelativeLayout {
         float fontTotalHeight = fontMetrics.bottom - fontMetrics.top;
         float offY = fontTotalHeight / 2 - fontMetrics.bottom;
         float newY = rect.bottom + margin + offY;
-
 
 
         float screenScale = mContext.getResources().getDisplayMetrics().density;
