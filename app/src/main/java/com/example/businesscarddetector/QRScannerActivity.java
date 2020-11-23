@@ -218,11 +218,13 @@ public class QRScannerActivity extends AppCompatActivity implements View.OnClick
             if (startActivityForResult) {
                 Log.d(LOG_TAG, "Got scan result from user loaded image for ActResult :" + resultString);
                 Intent data = new Intent(this, MainActivity.class);
+                data.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 data.putExtra(Constants.GOT_RESULT, resultString);
                 startActivity(data);
             } else {
                 Log.d(LOG_TAG, "Got scan result from user loaded image for startAct :" + resultString);
                 Intent data = new Intent(this, MainActivity.class);
+                data.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 data.putExtra(Constants.GOT_RESULT, resultString);
                 startActivity(data);
             }
@@ -233,6 +235,7 @@ public class QRScannerActivity extends AppCompatActivity implements View.OnClick
             if (!isSkip) {
                 isSkip = true;
                 Intent i = new Intent(this, MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(i);
                 finish();
             }
