@@ -161,7 +161,7 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
             ContactModel contactModelUpdate = (ContactModel) intent.getSerializableExtra("contact_model_insert");
             Log.d("receiver", "Got message: ");
             landingPresenter._getContacts();
-            Toast.makeText(getContext(), "Record Insert Successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Record Insert Successfully", Toast.LENGTH_LONG).show();
         }
     };
 

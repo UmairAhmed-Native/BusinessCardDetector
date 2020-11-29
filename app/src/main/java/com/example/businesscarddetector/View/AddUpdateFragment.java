@@ -123,9 +123,9 @@ public class AddUpdateFragment extends Fragment implements View.OnClickListener,
         edtPerson.setFilters(new InputFilter[]{
                 new InputFilter.LengthFilter(25)
         });
-        edtDesignation.setFilters(new InputFilter[]{
-                alphabetFilter, new InputFilter.LengthFilter(20)
-        });
+//        edtDesignation.setFilters(new InputFilter[]{
+//                alphabetFilter, new InputFilter.LengthFilter(20)
+//        });
         edtContact.setFilters(new InputFilter[]{
                 numberFilter, lengthFilter
         });

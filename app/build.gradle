@@ -55,5 +55,4 @@ dependencies {
     implementation "com.googlecode.ez-vcard:ez-vcard:$ez_vcard_version"
 
 
-
 }

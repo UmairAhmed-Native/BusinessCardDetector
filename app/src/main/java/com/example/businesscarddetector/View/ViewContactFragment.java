@@ -26,6 +26,7 @@ import com.example.businesscarddetector.Model.ContactModel;
 import com.example.businesscarddetector.Model.VCardModel;
 import com.example.businesscarddetector.Presenter.Impl.ViewContactPresenterImpl;
 import com.example.businesscarddetector.Presenter.ViewContactPresenter;
+import com.example.businesscarddetector.QRScannerActivity;
 import com.example.businesscarddetector.R;
 import com.example.businesscarddetector.View.ViewInterface.ViewContactView;
 import com.example.businesscarddetector.View.dialog.DeleteDialog;
@@ -105,7 +106,7 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
             Log.d("receiver", "Got message: ");
             ContactModel contactModelById = mPresenter.getContactById(contactModelUpdate.id);
             setRecords(contactModel);
-            Toast.makeText(getContext(), "Record Update Successfully", Toast.LENGTH_LONG).show();
+            //    Toast.makeText(getActivity(), "Record Update Successfully", Toast.LENGTH_LONG).show();
         }
     };
 
@@ -146,6 +147,7 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
                         txtContact.getText().toString().trim(),
                         txtEmail.getText().toString().trim());
             }
+
             /*else {
                 contactModel.setEmailAddress(txtEmail.getText().toString().trim());
                 contactModel.setCompanyName(txtCompany.getText().toString().trim());
@@ -225,7 +227,11 @@ public class ViewContactFragment extends Fragment implements View.OnClickListene
 
     public void setConfirm(boolean isConfirm, ContactModel contactModel, boolean isRemoveBtn) {
         if (isRemoveBtn) {
-            Objects.requireNonNull(getActivity()).onBackPressed();
+            Intent intent = new Intent(getActivity(), QRScannerActivity.class);
+
+            startActivity(intent);
+            Objects.requireNonNull(getActivity()).finish();
+            // Objects.requireNonNull(getActivity()).onBackPressed();
         } else {
             mPresenter.setConfirm(isConfirm, contactModel);
         }
