@@ -233,7 +233,6 @@ public class QRScannerActivity extends AppCompatActivity implements View.OnClick
             if (!isSkip) {
                 isSkip = true;
                 Intent i = new Intent(this, MainActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 this.startActivity(i);
                 finish();
             }
