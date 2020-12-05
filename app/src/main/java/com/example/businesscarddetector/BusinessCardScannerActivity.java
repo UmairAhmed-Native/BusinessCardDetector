@@ -26,22 +26,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BusinessCardScannerActivity extends AppCompatActivity {
-    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    Date _now = new Date();
-    String dateString = formatter.format(_now);
-    final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+//    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//    Date _now = new Date();
+//    String dateString = formatter.format(_now);
+//    final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_card_scanner);
-//        startApp();
-        checkValidation();
+        startApp();
+//        checkValidation();
 
 
     }
 
-    private void checkValidation() {
+    /*private void checkValidation() {
         Query checkTimeSpan = database.orderByChild("timespan");
         checkTimeSpan.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -61,7 +61,7 @@ public class BusinessCardScannerActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
     private void startApp() {
         if (!checkPermission()) {
