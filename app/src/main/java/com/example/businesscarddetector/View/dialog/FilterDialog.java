@@ -76,6 +76,10 @@ public class FilterDialog extends BottomSheetDialogFragment implements View.OnCl
             chckDesignation.setVisibility(View.VISIBLE);
             chckPerson.setVisibility(View.GONE);
             chckCompany.setVisibility(View.GONE);
+        } else {
+            chckDesignation.setVisibility(View.GONE);
+            chckPerson.setVisibility(View.GONE);
+            chckCompany.setVisibility(View.VISIBLE);
         }
     }
 
@@ -98,19 +102,19 @@ public class FilterDialog extends BottomSheetDialogFragment implements View.OnCl
             chckDesignation.setVisibility(View.GONE);
             chckPerson.setVisibility(View.GONE);
             chckCompany.setVisibility(View.VISIBLE);
-            landingFragmentInstance.searchFilter(1);
+            landingFragmentInstance.setSearchType(1);
             dismiss();
         } else if (view == txtByPerson) {
             chckDesignation.setVisibility(View.GONE);
             chckPerson.setVisibility(View.VISIBLE);
             chckCompany.setVisibility(View.GONE);
-            landingFragmentInstance.searchFilter(2);
+            landingFragmentInstance.setSearchType(2);
             dismiss();
         } else if (view == txtByDesignation) {
             chckDesignation.setVisibility(View.VISIBLE);
             chckPerson.setVisibility(View.GONE);
             chckCompany.setVisibility(View.GONE);
-            landingFragmentInstance.searchFilter(3);
+            landingFragmentInstance.setSearchType(3);
             dismiss();
         }
     }

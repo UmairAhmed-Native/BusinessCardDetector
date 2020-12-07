@@ -131,13 +131,7 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
 
             public void afterTextChanged(Editable s) {
                 searchString = searchEdt.getText().toString();
-                if (TextUtils.isEmpty(searchString)) {
-                    landingPresenter._getContacts();
-                } else {
-                    searchFilter(searchType);
-                }
-
-
+                searchFilter(searchType);
             }
 
             public void beforeTextChanged(CharSequence s, int start,
@@ -297,7 +291,11 @@ public class LandingFragment extends Fragment implements View.OnClickListener, L
 
     }
 
-    public void searchFilter(int searchType) {
+    public void setSearchType(int searchType) {
+        this.searchType = searchType;
+    }
+
+    private void searchFilter(int searchType) {
         switch (searchType) {
             case 1: {
                 this.searchType = 1;
